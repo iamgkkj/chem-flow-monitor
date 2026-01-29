@@ -18,6 +18,8 @@ staticfiles/
 .DS_Store
 .vscode/
 .idea/
+.windsurf
+context.md 
 
 # Reports
 *.pdf
