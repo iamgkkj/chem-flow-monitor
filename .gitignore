@@ -18,7 +18,7 @@ staticfiles/
 .DS_Store
 .vscode/
 .idea/
-.windsurf
+.windsurf/rules
 context.md 
 
 # React (web)
