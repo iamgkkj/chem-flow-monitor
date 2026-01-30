@@ -34,6 +34,9 @@
 - `GET /api/datasets/<id>/`
 - `GET /api/datasets/<id>/report/` (PDF)
 
+## Reporting
+- PDF report now includes: summary + type distribution list + embedded pie and bar charts.
+
 ## How to run (dev)
 - Start server: `../.venv/bin/python manage.py runserver` (run from `backend/`)
 
@@ -41,6 +44,7 @@
 - Location: `web/`
 - Tech: React + Chart.js (`react-chartjs-2`) + Axios
 - Dev proxy: `web/package.json` proxies to `http://127.0.0.1:8000`
+- UI: blue header, light/dark theme toggle, footer credits + social links, pie chart percentage labels
 
 ## How to run (dev) - Web
 - Backend (terminal 1): run from `backend/` -> `../.venv/bin/python manage.py runserver`

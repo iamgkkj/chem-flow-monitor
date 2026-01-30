@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { login, setToken } from '../api';
 
-export default function Login({ onLoggedIn }) {
+export default function Login({ onLoggedIn, theme }) {
   const [username, setUsername] = useState('demo');
   const [password, setPassword] = useState('demo12345');
   const [loading, setLoading] = useState(false);
