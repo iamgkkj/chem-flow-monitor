@@ -4,7 +4,6 @@ from io import BytesIO
 
 from reportlab.graphics import renderPDF
 from reportlab.graphics.charts.barcharts import VerticalBarChart
-from reportlab.graphics.charts.legends import Legend
 from reportlab.graphics.charts.piecharts import Pie
 from reportlab.graphics.shapes import Drawing
 from reportlab.lib import colors
@@ -73,17 +72,36 @@ def build_dataset_report_pdf(dataset: Dataset) -> bytes:
     total = sum(values) if values else 0.0
 
     if labels and values:
-        c.showPage()
+        palette = [
+            colors.HexColor('#4e79a7'),
+            colors.HexColor('#f28e2b'),
+            colors.HexColor('#e15759'),
+            colors.HexColor('#76b7b2'),
+            colors.HexColor('#59a14f'),
+            colors.HexColor('#edc949'),
+            colors.HexColor('#af7aa1'),
+            colors.HexColor('#ff9da7'),
+            colors.HexColor('#9c755f'),
+            colors.HexColor('#bab0ab'),
+        ]
 
         d_w = width - 4 * cm
-        d_h = 12 * cm
-        drawing = Drawing(d_w, d_h)
+        d_h = height - 6 * cm
+        draw_x = (width - d_w) / 2
+        draw_y = 2 * cm
 
+        c.showPage()
+        c.setFont('Helvetica-Bold', 14)
+        c.drawCentredString(width / 2, height - 2 * cm, 'Equipment Type Distribution (Pie Chart)')
+
+        pie_drawing = Drawing(d_w, d_h)
         pie = Pie()
-        pie.x = 0.5 * cm
-        pie.y = 0.8 * cm
-        pie.width = (d_w / 2) - 1.0 * cm
-        pie.height = d_h - 1.6 * cm
+
+        pie_size = min(d_w, d_h) - 2.0 * cm
+        pie.x = (d_w - pie_size) / 2
+        pie.y = (d_h - pie_size) / 2
+        pie.width = pie_size
+        pie.height = pie_size
         pie.data = values
         pie.labels = [
             f"{name} ({(val / total * 100):.0f}%)" if total else f"{name}"
@@ -91,26 +109,24 @@ def build_dataset_report_pdf(dataset: Dataset) -> bytes:
         ]
         pie.slices.strokeWidth = 0.5
         pie.slices.strokeColor = colors.white
-        palette = [
-            colors.HexColor('#1d4ed8'),
-            colors.HexColor('#2563eb'),
-            colors.HexColor('#3b82f6'),
-            colors.HexColor('#60a5fa'),
-            colors.HexColor('#93c5fd'),
-            colors.HexColor('#0ea5e9'),
-            colors.HexColor('#0284c7'),
-            colors.HexColor('#075985'),
-        ]
         for i in range(len(values)):
             pie.slices[i].fillColor = palette[i % len(palette)]
         pie.sideLabels = True
         pie.simpleLabels = False
 
+        pie_drawing.add(pie)
+        renderPDF.draw(pie_drawing, c, draw_x, draw_y)
+
+        c.showPage()
+        c.setFont('Helvetica-Bold', 14)
+        c.drawCentredString(width / 2, height - 2 * cm, 'Equipment Type Counts (Bar Chart)')
+
+        bar_drawing = Drawing(d_w, d_h)
         bar = VerticalBarChart()
-        bar.x = (d_w / 2) + 0.5 * cm
-        bar.y = 0.8 * cm
-        bar.width = (d_w / 2) - 1.0 * cm
-        bar.height = d_h - 2.2 * cm
+        bar.x = 1.0 * cm
+        bar.y = 1.0 * cm
+        bar.width = d_w - 2.0 * cm
+        bar.height = d_h - 2.5 * cm
         bar.data = [values]
         bar.categoryAxis.categoryNames = labels
         bar.categoryAxis.labels.boxAnchor = 'ne'
@@ -121,26 +137,8 @@ def build_dataset_report_pdf(dataset: Dataset) -> bytes:
         bar.bars[0].fillColor = colors.HexColor('#2563eb')
         bar.barSpacing = 2
 
-        legend = Legend()
-        legend.x = 0.5 * cm
-        legend.y = d_h - 0.2 * cm
-        legend.alignment = 'left'
-        legend.fontName = 'Helvetica'
-        legend.fontSize = 9
-        legend.dx = 6
-        legend.dy = 6
-        legend.columnMaximum = 1
-        legend.colorNamePairs = [
-            (colors.HexColor('#2563eb'), 'Pie: Type share (with % labels)  |  Bar: Type counts'),
-        ]
-
-        drawing.add(pie)
-        drawing.add(bar)
-        drawing.add(legend)
-
-        c.setFont('Helvetica-Bold', 14)
-        c.drawString(2 * cm, height - 2 * cm, 'Equipment Type Charts')
-        renderPDF.draw(drawing, c, 2 * cm, height - 2 * cm - d_h - 0.8 * cm)
+        bar_drawing.add(bar)
+        renderPDF.draw(bar_drawing, c, draw_x, draw_y)
 
     c.save()
     buffer.seek(0)

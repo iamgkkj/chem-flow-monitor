@@ -16,15 +16,17 @@ import { downloadReport, fetchDataset, fetchHistory, setToken, uploadDataset } f
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, ChartDataLabels);
 
-const BLUE_PALETTE = [
-  '#1d4ed8',
-  '#2563eb',
-  '#3b82f6',
-  '#60a5fa',
-  '#93c5fd',
-  '#0ea5e9',
-  '#0284c7',
-  '#075985',
+const PIE_PALETTE = [
+  '#4e79a7',
+  '#f28e2b',
+  '#e15759',
+  '#76b7b2',
+  '#59a14f',
+  '#edc949',
+  '#af7aa1',
+  '#ff9da7',
+  '#9c755f',
+  '#bab0ab',
 ];
 
 function formatNumber(n) {
@@ -78,7 +80,7 @@ export default function Dashboard({ onLogout, theme, onToggleTheme }) {
         {
           label: 'Equipment Types',
           data: distValues,
-          backgroundColor: distLabels.map((_, idx) => BLUE_PALETTE[idx % BLUE_PALETTE.length]),
+          backgroundColor: distLabels.map((_, idx) => PIE_PALETTE[idx % PIE_PALETTE.length]),
           borderColor: theme === 'light' ? '#ffffff' : '#0b1220',
           borderWidth: 2,
         },

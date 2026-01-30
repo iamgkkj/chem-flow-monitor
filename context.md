@@ -35,7 +35,8 @@
 - `GET /api/datasets/<id>/report/` (PDF)
 
 ## Reporting
-- PDF report now includes: summary + type distribution list + embedded pie and bar charts.
+- PDF report now includes: summary + type distribution list + embedded charts.
+- Charts layout: pie chart page first, then bar chart page, both centered with titles (prevents overlap).
 
 ## How to run (dev)
 - Start server: `../.venv/bin/python manage.py runserver` (run from `backend/`)
@@ -45,6 +46,7 @@
 - Tech: React + Chart.js (`react-chartjs-2`) + Axios
 - Dev proxy: `web/package.json` proxies to `http://127.0.0.1:8000`
 - UI: blue header, light/dark theme toggle, footer credits + social links, pie chart percentage labels
+- Charts: pie chart uses a multi-color palette for better visual separation; bar chart remains blue-themed.
 
 ## How to run (dev) - Web
 - Backend (terminal 1): run from `backend/` -> `../.venv/bin/python manage.py runserver`
