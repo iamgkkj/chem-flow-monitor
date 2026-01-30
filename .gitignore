@@ -21,5 +21,11 @@ staticfiles/
 .windsurf
 context.md 
 
+# React (web)
+web/node_modules/
+web/build/
+web/.env.local
+web/.env.*.local
+
 # Reports
 *.pdf

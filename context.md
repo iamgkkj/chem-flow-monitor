@@ -20,6 +20,8 @@
 - [x] History (last 5) implemented
 - [x] Authentication implemented
 - [x] PDF report implemented
+- [ ] Web frontend (React + Chart.js) implemented
+- [ ] Desktop frontend (PyQt5 + Matplotlib) implemented
 
 ## Current Status
 - Created `requirements.txt` for backend dependencies.
@@ -34,6 +36,23 @@
 
 ## How to run (dev)
 - Start server: `../.venv/bin/python manage.py runserver` (run from `backend/`)
+
+## Web Frontend
+- Location: `web/`
+- Tech: React + Chart.js (`react-chartjs-2`) + Axios
+- Dev proxy: `web/package.json` proxies to `http://127.0.0.1:8000`
+
+## How to run (dev) - Web
+- Backend (terminal 1): run from `backend/` -> `../.venv/bin/python manage.py runserver`
+- Web (terminal 2): run from `web/` -> `npm start`
+
+## Smoke Test (completed)
+- Created demo user: `demo` / `demo12345`
+- Token auth: `POST /api/auth/token/` => 200
+- Upload sample CSV: `POST /api/datasets/upload/` => 201 (dataset id `1`)
+- History: `GET /api/datasets/history/` => 200 (len 1)
+- Detail: `GET /api/datasets/1/` => 200 (`total_count` 15)
+- Report: `GET /api/datasets/1/report/` => 200 (`application/pdf`, ~2013 bytes)
 
 ## Decisions / Notes
 - Repo root: `/home/gopal/Desktop/Fossee`
