@@ -37,6 +37,7 @@
 ## Reporting
 - PDF report now includes: summary + type distribution list + embedded charts.
 - Charts layout: pie chart page first, then bar chart page, both centered with titles (prevents overlap).
+- Charts sizing: pie and bar drawings reduced to ~50% to avoid overpowering the page.
 
 ## How to run (dev)
 - Start server: `../.venv/bin/python manage.py runserver` (run from `backend/`)
@@ -47,6 +48,8 @@
 - Dev proxy: `web/package.json` proxies to `http://127.0.0.1:8000`
 - UI: blue header, light/dark theme toggle, footer credits + social links, pie chart percentage labels
 - Charts: pie chart uses a multi-color palette for better visual separation; bar chart remains blue-themed.
+- Bar chart: value labels on bars set to white for readability.
+- Branding: updated header/login branding with new logo assets; removed default React app title/manifest branding.
 
 ## How to run (dev) - Web
 - Backend (terminal 1): run from `backend/` -> `../.venv/bin/python manage.py runserver`

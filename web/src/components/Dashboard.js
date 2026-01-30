@@ -12,6 +12,8 @@ import {
 import { Pie, Bar } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
+import newLogo from '../newlogo.png';
+
 import { downloadReport, fetchDataset, fetchHistory, setToken, uploadDataset } from '../api';
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, ChartDataLabels);
@@ -147,6 +149,13 @@ export default function Dashboard({ onLogout, theme, onToggleTheme }) {
       responsive: true,
       plugins: {
         legend: { display: false },
+        datalabels: {
+          color: '#ffffff',
+          anchor: 'center',
+          align: 'center',
+          font: { weight: '800' },
+          formatter: (value) => `${value}`,
+        },
         tooltip: { enabled: true },
       },
       scales: {
@@ -227,9 +236,12 @@ export default function Dashboard({ onLogout, theme, onToggleTheme }) {
   return (
     <div className="page">
       <header className="topbar">
-        <div>
-          <div className="brand">Chem Flow Monitor</div>
-          <div className="muted">Equipment parameter visualizer</div>
+        <div className="brandRow">
+          <img className="brandIcon" src={newLogo} alt="Chem Flow" />
+          <div>
+            <div className="brand">Chem Flow Monitor</div>
+            <div className="muted">Equipment parameter visualizer</div>
+          </div>
         </div>
         <div className="topbarActions">
           <button className="button secondary" onClick={onToggleTheme}>

@@ -2,6 +2,8 @@ import { useState } from 'react';
 
 import { login, setToken } from '../api';
 
+import newLogoFull from '../newlogofull.png';
+
 export default function Login({ onLoggedIn, theme }) {
   const [username, setUsername] = useState('demo');
   const [password, setPassword] = useState('demo12345');
@@ -27,6 +29,7 @@ export default function Login({ onLoggedIn, theme }) {
   return (
     <div className="container">
       <div className="card">
+        <img className="loginLogo" src={newLogoFull} alt="Chem Flow Monitor" />
         <h1 className="title">Chem Flow Monitor</h1>
         <p className="subtitle">Sign in to access the dashboard</p>
 

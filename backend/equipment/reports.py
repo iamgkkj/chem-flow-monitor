@@ -85,10 +85,14 @@ def build_dataset_report_pdf(dataset: Dataset) -> bytes:
             colors.HexColor('#bab0ab'),
         ]
 
-        d_w = width - 4 * cm
-        d_h = height - 6 * cm
+        d_w = (width - 4 * cm) * 0.5
+        d_h = (height - 6 * cm) * 0.5
         draw_x = (width - d_w) / 2
-        draw_y = 2 * cm
+
+        top_margin = 3 * cm
+        bottom_margin = 2 * cm
+        available_h = height - top_margin - bottom_margin
+        draw_y = bottom_margin + max(0, (available_h - d_h) / 2)
 
         c.showPage()
         c.setFont('Helvetica-Bold', 14)

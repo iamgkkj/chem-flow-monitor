@@ -58,6 +58,14 @@
   letter-spacing: 0.3px;
 }
 
+.loginLogo {
+  width: 100%;
+  max-width: 360px;
+  height: auto;
+  display: block;
+  margin: 0 auto 10px;
+}
+
 .subtitle {
   margin: 8px 0 18px;
   color: var(--muted);
@@ -170,6 +178,22 @@
 .brand {
   font-weight: 800;
   letter-spacing: 0.3px;
+}
+
+.brandRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brandIcon {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 4px;
 }
 
 .muted {
