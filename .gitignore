@@ -19,13 +19,16 @@ staticfiles/
 .vscode/
 .idea/
 .windsurf/rules
-context.md 
 
 # React (web)
 web/node_modules/
 web/build/
 web/.env.local
 web/.env.*.local
+
+# Desktop (PyQt)
+desktop/.venv/
+desktop/__pycache__/
 
 # Reports
 *.pdf

@@ -20,7 +20,7 @@
 - [x] History (last 5) implemented
 - [x] Authentication implemented
 - [x] PDF report implemented
-- [ ] Web frontend (React + Chart.js) implemented
+- [x] Web frontend (React + Chart.js) implemented
 - [ ] Desktop frontend (PyQt5 + Matplotlib) implemented
 
 ## Current Status
@@ -45,6 +45,19 @@
 ## How to run (dev) - Web
 - Backend (terminal 1): run from `backend/` -> `../.venv/bin/python manage.py runserver`
 - Web (terminal 2): run from `web/` -> `npm start`
+
+## Desktop Frontend
+- Location: `desktop/`
+- Tech: PyQt5 + Matplotlib + requests
+- Entry point: `desktop/main.py`
+
+## How to run (dev) - Desktop
+- Backend: run from `backend/` -> `../.venv/bin/python manage.py runserver`
+- Desktop deps:
+  - `python3 -m venv desktop/.venv`
+  - `desktop/.venv/bin/pip install -r desktop/requirements.txt`
+- Run app:
+  - `desktop/.venv/bin/python desktop/main.py`
 
 ## Smoke Test (completed)
 - Created demo user: `demo` / `demo12345`
