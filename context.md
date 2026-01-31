@@ -79,4 +79,5 @@
 ## Decisions / Notes
 - Repo root: `/home/gopal/Desktop/Fossee`
 - Sample CSV present: `sample_equipment_data.csv`
+- README updated with full setup, architecture, API endpoints, repository tree, and usage flow.
 
