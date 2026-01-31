@@ -1,6 +1,4 @@
 
-
-
 # Chem Flow Monitor
 
 **Chemical Equipment Parameter Visualizer**
@@ -9,7 +7,7 @@ Chem Flow Monitor is a hybrid full-stack analytics platform designed to ingest, 
 
 This project was built to demonstrate a hybrid architecture where a single REST API drives multiple frontend interfaces (Web & Desktop) while maintaining consistent business logic and data integrity.
 
-## Project Overview
+## ◕ Project Overview
 
 The application solves the problem of analyzing batch CSV exports from industrial equipment. Users can upload raw datasets to generate instant analytics, including:
 * **Statistical Analysis:** Automated calculation of mean flow rates, pressures, and temperatures.
@@ -26,7 +24,7 @@ The application solves the problem of analyzing batch CSV exports from industria
 | **Desktop Frontend** | Python, PyQt5, Matplotlib | Native desktop GUI |
 | **Data Processing** | Pandas | CSV parsing and statistical computation |
 
-## Repository Structure
+##  Repository Structure
 
 ```text
 .
@@ -42,11 +40,11 @@ The application solves the problem of analyzing batch CSV exports from industria
 
 ---
 
-## Quick Start (Linux)
+## ♣ Quick Start (Linux)
 
 Follow these steps to set up the environment and run the application.
 
-### 1. Backend Setup (Django)
+### 1. Backend Setup (Django) 
 
 The backend must be running for either frontend to work.
 
@@ -70,7 +68,7 @@ python backend/manage.py runserver
 
 *Server runs at `http://127.0.0.1:8000*`
 
-### 2. Web Application Setup (React)
+### 2. Web Application Setup (React) ✿
 
 Open a new terminal tab:
 
@@ -87,7 +85,7 @@ npm start
 
 *The web app will open at `http://localhost:3000*`
 
-### 3. Desktop Application Setup (PyQt5)
+### 3. Desktop Application Setup (PyQt5) π
 
 Open a new terminal tab:
 
@@ -106,7 +104,7 @@ python desktop/main.py
 
 ---
 
-## Evaluation & Usage Guide
+## ✔ Evaluation & Usage Guide
 
 To test the application features, use the provided sample data and credentials.
 
@@ -119,7 +117,7 @@ To test the application features, use the provided sample data and credentials.
 
 * Use `sample_equipment_data.csv` located in the root of this repository.
 
-### Workflow
+### ✿ Workflow
 
 1. **Login:** Authenticate using the credentials above on either the Web or Desktop client.
 2. **Upload:** Navigate to the dashboard and upload the sample CSV.
@@ -127,7 +125,7 @@ To test the application features, use the provided sample data and credentials.
 4. **Report:** Click the "Generate PDF" button to download a comprehensive analysis report.
 5. **History:** Upload the file again (or a modified version) to see the History tab update with the most recent entries.
 
-## API Reference
+## ☁ API Reference
 
 The backend exposes the following endpoints for the frontend clients:
 
@@ -137,12 +135,13 @@ The backend exposes the following endpoints for the frontend clients:
 * `GET /api/datasets/<id>/report/` - Download PDF report.
 * `GET /api/datasets/history/` - List last 5 uploads.
 
-## Troubleshooting
+## ▲ Troubleshooting
 
 * **Connection Refused:** Ensure the Django backend is running on port `8000` before launching the frontends.
 * **Upload Failed:** Ensure the CSV file strictly follows the format: `Equipment Name, Type, Flowrate, Pressure, Temperature`.
 * **Desktop App Scaling:** If the PyQt5 window appears too small on high-DPI displays, you may need to set the environment variable: `export QT_AUTO_SCREEN_SCALE_FACTOR=1`.
 
-```
+---
+## Thanks for reviewing my project, hope you liked it ＼(＾O＾)／
 
-```
+★ Please star the repository if you find it useful★
