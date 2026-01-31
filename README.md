@@ -1,8 +1,6 @@
 
 
----
 
-```markdown
 # Chem Flow Monitor
 
 **Chemical Equipment Parameter Visualizer**
