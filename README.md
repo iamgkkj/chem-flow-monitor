@@ -97,7 +97,7 @@ python backend/manage.py createsuperuser --username demo --email demo@example.co
 python backend/manage.py runserver
 ```
 ---
-### 2. Web Application Setup (React) ✿
+### 2. Web Application Setup (React) 
 
 Open a new terminal tab:
 
@@ -192,7 +192,7 @@ To test the application features, use the provided sample data and credentials.
 </p>
 
 
-### ✿ Workflow
+### 🔌 Workflow
 
 1. **Login:** Authenticate using the credentials above on either the Web or Desktop client.
 2. **Upload:** Navigate to the dashboard and upload the sample CSV.
