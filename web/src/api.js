@@ -3,12 +3,12 @@ import axios from 'axios';
 const TOKEN_KEY = 'auth_token';
 
 // 1. If running locally (localhost), point to Django on port 8000.
-// 2. If running on Vercel (production), point to PythonAnywhere API.
+// 2. If running on render (production), point to render.
 const IS_LOCALHOST = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
 
 const API_URL = IS_LOCALHOST 
   ? "http://127.0.0.1:8000" 
-  : "https://YOUR_PYTHONANYWHERE_USERNAME.pythonanywhere.com"; 
+  : "https://chem-flow-backend.onrender.com"; 
 
 
 export function getToken() {
