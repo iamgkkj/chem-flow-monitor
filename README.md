@@ -1,6 +1,11 @@
 
 # Chem Flow Monitor
+**[🔴 Live Demo](https://chem-flow-web.onrender.com)** | **[📄 API Docs](https://chem-flow-backend.onrender.com/api/datasets/history/)**
 
+**Username:** `demo`
+**Password:** `demo12345`
+
+---
 **Chemical Equipment Parameter Visualizer**
 
 Chem Flow Monitor is a hybrid full-stack analytics platform designed to ingest, analyze, and visualize chemical equipment data. It operates as both a modern web dashboard and a standalone desktop application, powered by a unified Django backend.
@@ -46,8 +51,9 @@ Follow these steps to set up the environment and run the application.
 
 ### 1. Backend Setup (Django) 
 
-The backend must be running for either frontend to work.
+The backend must be running for either frontend to work. (DON'T Run this if you're running the automated script)
 
+#### A. Linux setup
 ```bash
 # Create and activate virtual environment
 python3 -m venv .venv
@@ -68,12 +74,29 @@ python backend/manage.py runserver
 
 *Server runs at `http://127.0.0.1:8000*`
 
+#### B. Windows setup
+```bash
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run migrations and setup database
+python backend/manage.py migrate
+python backend/manage.py createsuperuser --username demo --email demo@example.com
+# (Set password to 'demo12345' to match the guide below, or choose your own)
+
+# Start the server
+python backend/manage.py runserver
+```
+---
 ### 2. Web Application Setup (React) ✿
 
 Open a new terminal tab:
 
 ```bash
-cd web
+cd web # inside path/to/chem-flow-monitor/
 
 # Install Node modules
 npm install
@@ -85,22 +108,61 @@ npm start
 
 *The web app will open at `http://localhost:3000*`
 
-### 3. Desktop Application Setup (PyQt5) π
+### 3. Desktop Application Setup (PyQt5)
+Please Use the application in Full screen mode after login for better experience.
+
+#### A. Manual Setup (Recommended for Windows)
+##### i. Linux setup
+After running the backend setup (⚠️ crucial), follow these steps to run the desktop application:
 
 Open a new terminal tab:
 
 ```bash
+# Navigate to the desktop directory
+cd desktop # inside path/to/chem-flow-monitor/
+
 # Create a dedicated environment for desktop dependencies
-python3 -m venv desktop/.venv
-source desktop/.venv/bin/activate
+python3 -m venv .venv
+source .venv/bin/activate
 
 # Install desktop requirements
-pip install -r desktop/requirements.txt
+pip install -r requirements.txt
 
 # Launch the app
-python desktop/main.py
+.venv/bin/python main.py
 
 ```
+##### ii. Windows setup
+```bash
+# Navigate to the desktop directory
+cd desktop # inside path/to/chem-flow-monitor/
+
+# Create a dedicated environment for desktop dependencies
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+
+# Install desktop requirements
+pip install -r requirements.txt
+
+# Launch the app
+.venv\Scripts\python main.py
+```
+
+#### B. Automated Setup (Optional: No backend setup required)
+
+Open a new linux (or WSL) terminal and run the following commands:
+
+```bash
+# 1. Make sure you are in the project root
+cd desktop # inside path/to/chem-flow-monitor/
+
+# 2. Make the script executable (if you haven't already)
+chmod +x linuxrun.sh
+
+# 3. Run it
+./linuxrun.sh
+```
+If you're running the file as a program from GUI then make sure the backend server is running.
 
 ---
 
@@ -140,7 +202,13 @@ The backend exposes the following endpoints for the frontend clients:
 * **Connection Refused:** Ensure the Django backend is running on port `8000` before launching the frontends.
 * **Upload Failed:** Ensure the CSV file strictly follows the format: `Equipment Name, Type, Flowrate, Pressure, Temperature`.
 * **Desktop App Scaling:** If the PyQt5 window appears too small on high-DPI displays, you may need to set the environment variable: `export QT_AUTO_SCREEN_SCALE_FACTOR=1`.
+* **Automated Script issues:** If the automated script fails to run, Please check if the backend server is running on port `8000` before running the script. Also allow the permissions to the script by running `chmod +x linuxrun.sh`. 
+*If the script still fails to run, you should do manual setup as mentioned in the manual setup section.*
+* **Desktop App Full Screen:** Please Use the application in Full screen mode after login for better experience.
+* **Invisible password during initial setup** Keep in mind that the password is invisible during initial setup (Due to TUI limitations), but it is still being set. *Tip: hold backspace to clear the password and then type it again.*
+* **Testing Application in Windows:** There is currently no automated setup for windows, you should do manual setup as mentioned in the manual setup section.
 
+⚠️ **Important** If pip install fails to install dependencies in windows desktop, you should install them manually.
 ---
 ## Thanks for reviewing my project, hope you liked it ＼(＾O＾)／
 
