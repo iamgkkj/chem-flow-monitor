@@ -2,6 +2,15 @@ import axios from 'axios';
 
 const TOKEN_KEY = 'auth_token';
 
+// 1. If running locally (localhost), point to Django on port 8000.
+// 2. If running on Vercel (production), point to PythonAnywhere API.
+const IS_LOCALHOST = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+
+const API_URL = IS_LOCALHOST 
+  ? "http://127.0.0.1:8000" 
+  : "https://YOUR_PYTHONANYWHERE_USERNAME.pythonanywhere.com"; 
+
+
 export function getToken() {
   return localStorage.getItem(TOKEN_KEY);
 }
@@ -14,8 +23,9 @@ export function setToken(token) {
   }
 }
 
+
 export const api = axios.create({
-  baseURL: '/api',
+  baseURL: API_URL + '/api', 
 });
 
 api.interceptors.request.use((config) => {
@@ -28,7 +38,8 @@ api.interceptors.request.use((config) => {
 });
 
 export async function login(username, password) {
-  const resp = await axios.post('/api/auth/token/', { username, password });
+ 
+  const resp = await api.post('/auth/token/', { username, password });
   return resp.data;
 }
 
