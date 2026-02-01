@@ -184,6 +184,13 @@ To test the application features, use the provided sample data and credentials.
 **Sample Data:**
 
 * Use `sample_equipment_data.csv` located in the root of this repository.
+<p align="center">
+  <img src="https://github.com/iamgkkj/chem-flow-monitor/blob/cb71e401aa668ffe846712f0faa028a4e04b0f42/backend/screenshots/Screenshot%20from%202026-02-02%2003-39-14.png" width="300" alt="Desktop Application Login">
+</p>
+<p align="center">
+  <img src="https://github.com/iamgkkj/chem-flow-monitor/blob/f83fd9dce12b8292dbdc02d9c0356561d33bbbfe/backend/screenshots/web%20login.png" width="800" alt="Web Login Screenshot">
+</p>
+
 
 ### ✿ Workflow
 
@@ -199,7 +206,9 @@ To test the application features, use the provided sample data and credentials.
 <p align="center">
   <img src="https://github.com/iamgkkj/chem-flow-monitor/blob/861705097e9b611e1081ff3dd95c07fd5691c1ef/backend/screenshots/Screenshot%20from%202026-02-02%2000-07-26.png" width="800" alt="Web Application Screenshot2">
 </p>
-
+<p align="center">
+  <img src="https://github.com/iamgkkj/chem-flow-monitor/blob/cb71e401aa668ffe846712f0faa028a4e04b0f42/backend/screenshots/Screenshot%20from%202026-02-02%2003-39-31.png" width="800" alt="Desktop Application Screenshot">
+</p>
 
 ## ☁ API Reference
 
