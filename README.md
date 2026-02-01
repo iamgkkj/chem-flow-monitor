@@ -5,6 +5,12 @@
 **Username:** `demo`
 **Password:** `demo12345`
 
+<p align="center">
+  <img src="https://github.com/iamgkkj/chem-flow-monitor/blob/861705097e9b611e1081ff3dd95c07fd5691c1ef/web/src/QR%20Code.png" alt="Scan me" width="300"/>
+  <br>
+  <em>Scan to test on mobile</em>
+</p>
+
 ---
 **Chemical Equipment Parameter Visualizer**
 
@@ -45,7 +51,7 @@ The application solves the problem of analyzing batch CSV exports from industria
 
 ---
 
-## ♣ Quick Start (Linux)
+##  Quick Start
 
 Follow these steps to set up the environment and run the application.
 
@@ -187,6 +193,14 @@ To test the application features, use the provided sample data and credentials.
 4. **Report:** Click the "Generate PDF" button to download a comprehensive analysis report.
 5. **History:** Upload the file again (or a modified version) to see the History tab update with the most recent entries.
 
+<p align="center">
+  <img src="https://github.com/iamgkkj/chem-flow-monitor/raw/861705097e9b611e1081ff3dd95c07fd5691c1ef/backend/screenshots/Screenshot%20from%202026-02-02%2000-07-20.png" width="800" alt="Web Application Screenshot1">
+</p>
+<p align="center">
+  <img src="https://github.com/iamgkkj/chem-flow-monitor/blob/861705097e9b611e1081ff3dd95c07fd5691c1ef/backend/screenshots/Screenshot%20from%202026-02-02%2000-07-26.png" width="800" alt="Web Application Screenshot2">
+</p>
+
+
 ## ☁ API Reference
 
 The backend exposes the following endpoints for the frontend clients:
@@ -208,7 +222,9 @@ The backend exposes the following endpoints for the frontend clients:
 * **Invisible password during initial setup** Keep in mind that the password is invisible during initial setup (Due to TUI limitations), but it is still being set. *Tip: hold backspace to clear the password and then type it again.*
 * **Testing Application in Windows:** There is currently no automated setup for windows, you should do manual setup as mentioned in the manual setup section.
 
-⚠️ **Important** If pip install fails to install dependencies in windows desktop, you should install them manually.
+#### ⚠️ Important: 
+If ```pip install -r requirements.txt``` fails to install dependencies in windows desktop, you should install them manually one by one.
+
 ---
 ## Thanks for reviewing my project, hope you liked it ＼(＾O＾)／
 

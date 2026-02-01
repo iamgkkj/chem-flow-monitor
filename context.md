@@ -59,6 +59,7 @@
 - Location: `desktop/`
 - Tech: PyQt5 + Matplotlib + requests
 - Entry point: `desktop/main.py`
+- UI: primary/secondary button styling; title area is plain text (no highlighted header bar).
 
 ## How to run (dev) - Desktop
 - Backend: run from `backend/` -> `../.venv/bin/python manage.py runserver`

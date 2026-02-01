@@ -1,5 +1,7 @@
 import sys
 
+from typing import Optional
+
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (
     QApplication,
@@ -25,6 +27,55 @@ from matplotlib.figure import Figure
 from api_client import ApiClient, ApiError
 
 
+APP_STYLESHEET = """
+QPushButton[variant="primary"] {
+  background-color: #1d4ed8;
+  color: #ffffff;
+  border: 1px solid rgba(29, 78, 216, 0.9);
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+QPushButton[variant="primary"]:disabled {
+  background-color: rgba(29, 78, 216, 0.55);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+QPushButton[variant="secondary"] {
+  background-color: rgba(37, 99, 235, 0.10);
+  color: #0f172a;
+  border: 1px solid rgba(37, 99, 235, 0.35);
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+"""
+
+
+def _set_button_variant(btn: QPushButton, variant: str) -> None:
+    btn.setProperty('variant', variant)
+
+
+class HeaderBar(QWidget):
+    def __init__(self, title: str, subtitle: Optional[str] = None, parent=None):
+        super().__init__(parent)
+        title_label = QLabel(title)
+        title_label.setStyleSheet('font-weight: 800; font-size: 14px; color: #0f172a;')
+
+        layout = QVBoxLayout()
+        layout.setContentsMargins(16, 12, 16, 12)
+        layout.setSpacing(2)
+        layout.addWidget(title_label)
+
+        if subtitle:
+            subtitle_label = QLabel(subtitle)
+            subtitle_label.setStyleSheet('color: rgba(15, 23, 42, 0.7); font-size: 11px;')
+            layout.addWidget(subtitle_label)
+
+        self.setLayout(layout)
+
+
 class LoginDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -43,6 +94,8 @@ class LoginDialog(QDialog):
 
         self.login_btn = QPushButton('Login')
         self.cancel_btn = QPushButton('Cancel')
+        _set_button_variant(self.login_btn, 'primary')
+        _set_button_variant(self.cancel_btn, 'secondary')
         self.login_btn.clicked.connect(self.accept)
         self.cancel_btn.clicked.connect(self.reject)
 
@@ -52,6 +105,7 @@ class LoginDialog(QDialog):
         btns.addWidget(self.login_btn)
 
         layout = QVBoxLayout()
+        layout.addWidget(HeaderBar('Chem flow monitor', 'Equipment parameter visualizer'))
         layout.addLayout(form)
         layout.addLayout(btns)
         self.setLayout(layout)
@@ -99,6 +153,8 @@ class MainWindow(QMainWindow):
         self.file_label = QLabel('No file selected')
         self.pick_btn = QPushButton('Choose CSV')
         self.upload_btn = QPushButton('Upload')
+        _set_button_variant(self.pick_btn, 'secondary')
+        _set_button_variant(self.upload_btn, 'primary')
         self.upload_btn.setEnabled(False)
 
         self.pick_btn.clicked.connect(self.choose_file)
@@ -144,6 +200,10 @@ class MainWindow(QMainWindow):
         self.pdf_btn = QPushButton('Download PDF')
         self.refresh_btn = QPushButton('Refresh History')
 
+        _set_button_variant(self.refresh_btn, 'secondary')
+        _set_button_variant(self.load_btn, 'secondary')
+        _set_button_variant(self.pdf_btn, 'primary')
+
         self.load_btn.clicked.connect(self.load_selected)
         self.pdf_btn.clicked.connect(self.download_selected_pdf)
         self.refresh_btn.clicked.connect(self.refresh_history)
@@ -163,6 +223,7 @@ class MainWindow(QMainWindow):
 
         root = QWidget()
         root_layout = QVBoxLayout()
+        root_layout.addWidget(HeaderBar('Chem flow monitor', 'Equipment parameter visualizer'))
         root_layout.addWidget(splitter)
         root_layout.addWidget(history_panel)
         root.setLayout(root_layout)
@@ -275,6 +336,7 @@ class MainWindow(QMainWindow):
 
 def main():
     app = QApplication(sys.argv)
+    app.setStyleSheet(APP_STYLESHEET)
 
     dlg = LoginDialog()
     if dlg.exec_() != QDialog.Accepted:
