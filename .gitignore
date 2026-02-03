@@ -19,6 +19,7 @@ staticfiles/
 .vscode/
 .idea/
 .windsurf/rules
+context.md
 
 # React (web)
 web/node_modules/
