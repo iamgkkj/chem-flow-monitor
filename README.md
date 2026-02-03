@@ -1,5 +1,5 @@
 # Chem Flow Monitor
-**[🔴 Live Demo](https://chem-flow-web.onrender.com)** | **[📄 API Docs](https://chem-flow-backend.onrender.com/api/datasets/history/)**
+**[🔴 Live Demo](https://chem-flow-monitor.onrender.com/)** | **[📄 API Docs](https://chem-flow-backend.onrender.com/api/datasets/history/)**
 
 **Username:** `demo`
 **Password:** `demo12345`
