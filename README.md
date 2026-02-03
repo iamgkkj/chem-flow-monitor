@@ -9,6 +9,8 @@
   <img src="https://github.com/iamgkkj/chem-flow-monitor/blob/861705097e9b611e1081ff3dd95c07fd5691c1ef/web/src/QR%20Code.png" alt="Scan me" width="300"/>
   <br>
   <em>Scan to test on mobile</em>
+  <br>
+  <sub>(Enable Desktop mode in browser recommended)</sub>
 </p>
 
 ---
@@ -247,12 +249,23 @@ The backend exposes the following endpoints for the frontend clients:
 * **Automated Script issues:** If the automated script fails to run, Please check if the backend server is running on port `8000` before running the script. Also allow the permissions to the script by running `chmod +x linuxrun.sh`. 
 *If the script still fails to run, you should do manual setup as mentioned in the manual setup section.*
 * **Desktop App Full Screen:** Please Use the application in Full screen mode after login for better experience.
-* **Invisible password during initial setup** Keep in mind that the password is invisible during initial setup (Due to TUI limitations), but it is still being set. *Tip: hold backspace to clear the password and then type it again.*
+* **Invisible password during initial setup:** Keep in mind that the password is invisible during initial setup (Due to TUI limitations), but it is still being set. *Tip: hold backspace to clear the password and then type it again.*
 * **Testing Application in Windows:** You can use the automated `winrun.ps1` script in PowerShell for a quick setup. If it fails, follow the manual setup.
 * **Incorrect Python Environment:** If you get "ModuleNotFoundError", ensure you are using the virtual environment. It is safer to use the explicit path: `.venv/bin/python` (Linux/Mac OS) or `.venv\Scripts\python` (Windows) instead of just `python`.
 
 #### ⚠️ Important: 
-If ```pip install -r requirements.txt``` fails to install dependencies in windows desktop, you should install them manually one by one.
+**Windows Execution Policy Error:**
+If you see "running scripts is disabled on this system", run this command in PowerShell as Administrator:
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope LocalMachine -Force
+```
+
+**Dependency Installation Error:**
+If dependencies fail to install (e.g. `numpy` build error), ensure you have the latest `pip`:
+```powershell
+python -m pip install --upgrade pip
+```
+Then try running `winrun.ps1` again.
 
 ---
 ## Thanks for reviewing my project, hope you liked it ＼(＾O＾)／

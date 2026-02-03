@@ -5,8 +5,10 @@ if (!(Test-Path "../.venv")) {
 & ../.venv/Scripts/Activate.ps1
 
 # Install dependencies
-pip install -r ../requirements.txt
-pip install -r requirements.txt
+# Install dependencies
+python -m pip install --upgrade pip
+pip install Django djangorestframework django-cors-headers gunicorn pandas reportlab --only-binary :all:
+pip install PyQt5 matplotlib requests --only-binary :all:
 
 # Database setup
 python ../backend/manage.py migrate
