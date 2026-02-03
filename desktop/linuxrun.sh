@@ -1,17 +1,27 @@
-# Create and activate virtual environment
-python3 -m venv ../.venv
-source ../.venv/bin/activate
+#!/bin/bash
+
+# Setup environment
+cd ..
+if [ ! -d ".venv" ]; then
+    python3 -m venv .venv
+fi
+source .venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
+pip install -r desktop/requirements.txt
 
-# Run migrations and setup database
-python ../backend/manage.py migrate
-python ../backend/manage.py createsuperuser --username demo --email demo@example.com
-# (Set password to 'demo12345' to match the guide below, or choose your own)
+# Database setup
+python3 backend/manage.py migrate
+python3 backend/create_demo_user.py
 
-# Start the server
-python ../backend/manage.py runserver
+# Start backend in background
+python3 backend/manage.py runserver > /dev/null 2>&1 &
+BACKEND_PID=$!
 
-# Run the desktop app
-.venv/bin/python main.py
+# Launch desktop app
+cd desktop
+python3 main.py
+
+# Cleanup
+kill $BACKEND_PID

@@ -55,9 +55,28 @@ The application solves the problem of analyzing batch CSV exports from industria
 
 Follow these steps to set up the environment and run the application.
 
+#### Automated Setup (Optional)
+Run the entire stack with a single script:
+
+##### Linux / macOS
+```bash
+cd desktop
+chmod +x linuxrun.sh
+./linuxrun.sh
+```
+
+> [!TIP]
+> **GUI execution (Linux):** You can also run the script without the terminal. Right-click `linuxrun.sh` > **Properties** > **Permissions** > Check **"Allow executing file as program"**. After that, you can simply right-click the file and select **"Run as a program"** anytime.
+
+##### Windows
+```powershell
+cd desktop
+./winrun.ps1
+```
+
 ### 1. Backend Setup (Django) 
 
-The backend must be running for either frontend to work. (DON'T Run this if you're running the automated script)
+The backend must be running for either frontend to work.
 
 #### A. Linux setup
 ```bash
@@ -229,7 +248,8 @@ The backend exposes the following endpoints for the frontend clients:
 *If the script still fails to run, you should do manual setup as mentioned in the manual setup section.*
 * **Desktop App Full Screen:** Please Use the application in Full screen mode after login for better experience.
 * **Invisible password during initial setup** Keep in mind that the password is invisible during initial setup (Due to TUI limitations), but it is still being set. *Tip: hold backspace to clear the password and then type it again.*
-* **Testing Application in Windows:** There is currently no automated setup for windows, you should do manual setup as mentioned in the manual setup section.
+* **Testing Application in Windows:** You can use the automated `winrun.ps1` script in PowerShell for a quick setup. If it fails, follow the manual setup.
+* **Incorrect Python Environment:** If you get "ModuleNotFoundError", ensure you are using the virtual environment. It is safer to use the explicit path: `.venv/bin/python` (Linux/Mac OS) or `.venv\Scripts\python` (Windows) instead of just `python`.
 
 #### ⚠️ Important: 
 If ```pip install -r requirements.txt``` fails to install dependencies in windows desktop, you should install them manually one by one.
