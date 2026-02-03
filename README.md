@@ -69,12 +69,17 @@ chmod +x linuxrun.sh
 
 > [!TIP]
 > **GUI execution (Linux):** You can also run the script without the terminal. Right-click `linuxrun.sh` > **Properties** > **Permissions** > Check **"Allow executing file as program"**. After that, you can simply right-click the file and select **"Run as a program"** anytime.
+> 
+> **GUI execution (macOS):** Rename `linuxrun.sh` to `linuxrun.command`. You can then double-click it to run. (You may need to `chmod +x linuxrun.command` once from terminal).
 
 ##### Windows
 ```powershell
 cd desktop
 ./winrun.ps1
 ```
+
+> [!TIP]
+> **GUI execution (Windows):** After setting the execution policy (see Troubleshooting), you can run the script without opening a terminal manually. Right-click `winrun.ps1` and select **"Run with PowerShell"**.
 
 ### 1. Backend Setup (Django) 
 
@@ -252,6 +257,7 @@ The backend exposes the following endpoints for the frontend clients:
 * **Invisible password during initial setup:** Keep in mind that the password is invisible during initial setup (Due to TUI limitations), but it is still being set. *Tip: hold backspace to clear the password and then type it again.*
 * **Testing Application in Windows:** You can use the automated `winrun.ps1` script in PowerShell for a quick setup. If it fails, follow the manual setup.
 * **Incorrect Python Environment:** If you get "ModuleNotFoundError", ensure you are using the virtual environment. It is safer to use the explicit path: `.venv/bin/python` (Linux/Mac OS) or `.venv\Scripts\python` (Windows) instead of just `python`.
+* **Bad Request (400) in Windows:** If you can't login with the demo credentials, it might be because the automation script created a new superuser with your system's specific environment. Try logging in with the username/password you manually set (if any) or check the script output for user creation status.
 
 #### ⚠️ Important: 
 **Windows Execution Policy Error:**

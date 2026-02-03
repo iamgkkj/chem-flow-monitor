@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Setup environment
+cd "$(dirname "$0")"
 cd ..
 if [ ! -d ".venv" ]; then
     python3 -m venv .venv
