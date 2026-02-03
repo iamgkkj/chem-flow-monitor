@@ -1,4 +1,3 @@
-
 # Chem Flow Monitor
 **[🔴 Live Demo](https://chem-flow-web.onrender.com)** | **[📄 API Docs](https://chem-flow-backend.onrender.com/api/datasets/history/)**
 
@@ -12,6 +11,9 @@
   <br>
   <sub>(Enable Desktop mode in browser recommended)</sub>
 </p>
+
+> [!NOTE]
+> **Render.com** free tier deployment may take some time (up to 1-2 minutes) to reactivate after a period of inactivity. Please be patient while the live demo loads.
 
 ---
 **Chemical Equipment Parameter Visualizer**
@@ -86,27 +88,41 @@ cd desktop
 The backend must be running for either frontend to work.
 
 #### A. Linux setup
+##### Automated Setup (Recommended)
+```bash
+cd backend
+chmod +x backend.sh
+./backend.sh
+```
+
+##### Manual Setup
 ```bash
 # Create and activate virtual environment
 python3 -m venv .venv
 source .venv/bin/activate
 
 # Install dependencies
-pip install -r requirements.txt
+python -m pip install --upgrade pip
+pip install Django==4.2.10 djangorestframework==3.14.0 pandas==2.2.0 reportlab==4.0.9 django-cors-headers==4.3.1 gunicorn --only-binary :all:
 
 # Run migrations and setup database
-python backend/manage.py migrate
-python backend/manage.py createsuperuser --username demo --email demo@example.com
+python3 backend/manage.py migrate
+python3 backend/manage.py createsuperuser --username demo --email demo@example.com
 # (Set password to 'demo12345' to match the guide below, or choose your own)
 
 # Start the server
-python backend/manage.py runserver
+python3 backend/manage.py runserver
 
 ```
 
-*Server runs at `http://127.0.0.1:8000*`
-
 #### B. Windows setup
+##### Automated Setup (Recommended)
+```powershell
+cd backend
+./backend.ps1
+```
+
+##### Manual Setup
 ```bash
 python -m venv .venv
 .venv\Scripts\Activate.ps1
@@ -122,38 +138,69 @@ python backend/manage.py createsuperuser --username demo --email demo@example.co
 # Start the server
 python backend/manage.py runserver
 ```
+
+*Server runs at `http://127.0.0.1:8000`*
 ---
 ### 2. Web Application Setup (React) 
 
-Open a new terminal tab:
+#### Automated Setup (Recommended)
+You can run the frontend efficiently using the provided scripts.
 
+##### Linux / macOS
 ```bash
-cd web # inside path/to/chem-flow-monitor/
-
-# Install Node modules
-npm install
-
-# Start the development server
-npm start
-
+cd web
+chmod +x frontend.sh
+./frontend.sh
 ```
 
-*The web app will open at `http://localhost:3000*`
+##### Windows
+```powershell
+cd web
+./frontend.ps1
+```
+
+*The web app will open at `http://localhost:3000`*
+
+> [!TIP]
+> **Access on Local Network:** You can access the web dashboard from other devices (e.g. mobile) on the same Wi-Fi network. Check the terminal output after starting the frontend for the **"On Your Network"** URL (e.g., `http://192.168.x.x:3000`).
 
 ### 3. Desktop Application Setup (PyQt5)
 Please Use the application in Full screen mode after login for better experience.
 
-#### A. Manual Setup (Recommended for Windows)
-##### i. Linux setup
-After running the backend setup (⚠️ crucial), follow these steps to run the desktop application:
+#### A. Automated Setup (Recommended)
 
-Open a new terminal tab:
+Run the desktop application easily with the provided scripts.
+
+##### Linux / macOS
+```bash
+# Navigate to desktop directory
+cd desktop
+
+# Make executable and run
+chmod +x linuxrun.sh
+./linuxrun.sh
+```
+
+##### Windows
+```powershell
+cd desktop
+./winrun.ps1
+```
+
+> [!NOTE]
+> The automated scripts (especially on Windows) handle dependency installation and backend startup for you.
+
+#### B. Manual Setup (Optional)
+If you prefer to control the environment yourself.
+
+##### i. Linux setup
+After running the backend setup (⚠️ crucial), follow these steps:
 
 ```bash
 # Navigate to the desktop directory
-cd desktop # inside path/to/chem-flow-monitor/
+cd desktop
 
-# Create a dedicated environment for desktop dependencies
+# Create and activate virtual environment
 python3 -m venv .venv
 source .venv/bin/activate
 
@@ -161,38 +208,23 @@ source .venv/bin/activate
 pip install -r requirements.txt
 
 # Launch the app
-.venv/bin/python main.py
-
+.venv/bin/python3 main.py
 ```
-##### ii. Windows setup
-```bash
-# Navigate to the desktop directory
-cd desktop # inside path/to/chem-flow-monitor/
 
-# Create a dedicated environment for desktop dependencies
+##### ii. Windows setup
+```powershell
+# Navigate to the desktop directory
+cd desktop
+
+# Create virtual environment
 python -m venv .venv
 .venv\Scripts\Activate.ps1
 
-# Install desktop requirements
-pip install -r requirements.txt
+# Install desktop requirements (Install individually to avoid version conflicts)
+pip install PyQt5 matplotlib requests
 
 # Launch the app
 .venv\Scripts\python main.py
-```
-
-#### B. Automated Setup (Optional: No backend setup required)
-
-Open a new linux (or WSL) terminal and run the following commands:
-
-```bash
-# 1. Make sure you are in the project root
-cd desktop # inside path/to/chem-flow-monitor/
-
-# 2. Make the script executable (if you haven't already)
-chmod +x linuxrun.sh
-
-# 3. Run it
-./linuxrun.sh
 ```
 If you're running the file as a program from GUI then make sure the backend server is running.
 
@@ -256,7 +288,7 @@ The backend exposes the following endpoints for the frontend clients:
 * **Desktop App Full Screen:** Please Use the application in Full screen mode after login for better experience.
 * **Invisible password during initial setup:** Keep in mind that the password is invisible during initial setup (Due to TUI limitations), but it is still being set. *Tip: hold backspace to clear the password and then type it again.*
 * **Testing Application in Windows:** You can use the automated `winrun.ps1` script in PowerShell for a quick setup. If it fails, follow the manual setup.
-* **Incorrect Python Environment:** If you get "ModuleNotFoundError", ensure you are using the virtual environment. It is safer to use the explicit path: `.venv/bin/python` (Linux/Mac OS) or `.venv\Scripts\python` (Windows) instead of just `python`.
+* **Incorrect Python Environment:** If you get "ModuleNotFoundError", ensure you are using the virtual environment. It is safer to use the explicit path: `.venv/bin/python3` (Linux/Mac OS) or `.venv\Scripts\python` (Windows) instead of just `python`.
 * **Bad Request (400) in Windows:** If you can't login with the demo credentials, it might be because the automation script created a new superuser with your system's specific environment. Try logging in with the username/password you manually set (if any) or check the script output for user creation status.
 
 #### ⚠️ Important: 
