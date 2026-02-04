@@ -1,5 +1,5 @@
 # Chem Flow Monitor
-**[🔴 Live Demo](https://chem-flow-monitor.onrender.com/)** | **[📄 API Docs](https://chem-flow-backend.onrender.com/api/datasets/history/)**
+**[🔴 Live Demo](https://chem-flow-monitor.onrender.com/)** | **[📄 API Docs](https://chem-flow-backend.onrender.com/api/datasets/history/)** | **[📄 Project Documentation](https://docs.google.com/document/d/1sbKwdR0MgMHTLUGTTjjW1WPOu5JB55w-su5mencRrjU/edit?usp=sharing)**
 
 **Username:** `demo`
 **Password:** `demo12345`
@@ -9,7 +9,7 @@
   <br>
   <em>Scan to test on mobile</em>
   <br>
-  <sub>(Enable Desktop mode in browser recommended)</sub>
+  <sub>(Enable Desktop mode in browser-recommended)</sub>
 </p>
 
 > [!NOTE]
@@ -140,6 +140,7 @@ python backend/manage.py runserver
 ```
 
 *Server runs at `http://127.0.0.1:8000`*
+
 ---
 ### 2. Web Application Setup (React) 
 
