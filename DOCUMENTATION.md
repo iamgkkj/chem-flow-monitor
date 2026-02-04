@@ -79,7 +79,9 @@ chem-flow-monitor/
 ### A. The Backend (Python/Django)
 The heart of the system. We started by defining the data model in `backend/equipment/models.py`. The `Dataset` model is designed to be immutable regarding the file content—once a CSV is uploaded, we immediately calculate its stats and save them as fields (`avg_flowrate`, `type_distribution`, etc.) to avoid re-calculating them on every read.
 
-*   **CSV Parsing (`services.py`):** We use the **Pandas** library for this. It allows us to read the uploaded file, validate columns, and compute means in just a few efficient lines of code.
+*   **CSV Parsing (`services.py`):** 
+    *   `parse_equipment_csv(file)`: Validates headers and converts columns to numeric types.
+    *   `compute_summary(df)`: Calculates averages (`avg_flowrate`, etc.) and determines type distribution using Pandas vectorization.
 *   **API Views (`views.py`):** We use Django Rest Framework (DRF). The `DatasetUploadView` is the most complex endpoint. It receives the file, passes it to the generic service layer for parsing, saves the result, and then ensures we only keep the last 5 datasets to save space.
 
 ### B. The Desktop App (PyQt5)
@@ -92,7 +94,7 @@ Located in `desktop/main.py`. This is a traditional GUI programming approach.
 ### C. The Web App (React)
 Located in `web/`.
 *   **State:** We use React hooks (`useState`, `useEffect`) in `App.js` to manage the authentication state globally.
-*   **Storage:** The Auth Token is stored in `sessionStorage` (in `api.js`). We chose `sessionStorage` over `localStorage` so that the user's session ends when they close the tab—a simple way to avoid stale token issues.
+*   **Storage:** The Auth Token is stored in `sessionStorage` (in `api.js`). We chose `sessionStorage` over `localStorage` so that the user's session ends when they close the tab/window. This auto-logout feature is crucial for security and prevents stale token issues on the free database tier.
 *   **Data:** Similar to the desktop app, it fetches JSON data from the API and renders it. For charts, it uses `Chart.js`, which is more "web-native" and interactive than Matplotlib.
 
 ---
