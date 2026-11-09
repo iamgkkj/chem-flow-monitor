@@ -43,13 +43,72 @@ The application solves the problem of analyzing batch CSV exports from industria
 
 ```text
 .
-├── backend/                # Django project root (API & Logic)
-├── desktop/                # PyQt5 application source
-│   ├── main.py             # Desktop app entry point
-│   └── requirements.txt    # Desktop-specific dependencies
-├── web/                    # React application source
-├── sample_equipment_data.csv  # Test dataset
-└── requirements.txt        # Backend dependencies
+├── backend/                          # Django project root (API & Logic)
+│   ├── backend.ps1                  # Windows backend setup script
+│   ├── backend.sh                   # Linux backend setup script
+│   ├── config/                      # Django configuration
+│   │   ├── __init__.py
+│   │   ├── asgi.py                  # ASGI config
+│   │   ├── settings.py              # Django settings
+│   │   ├── urls.py                  # Root URL configuration
+│   │   └── wsgi.py                  # WSGI config
+│   ├── create_demo_user.py          # Script to create demo user
+│   ├── equipment/                  # Main Django app
+│   │   ├── __init__.py
+│   │   ├── admin.py                 # Django admin configuration
+│   │   ├── apps.py                  # App configuration
+│   │   ├── migrations/              # Database migrations
+│   │   │   ├── 0001_initial.py
+│   │   │   └── __init__.py
+│   │   ├── models.py                # Database models
+│   │   ├── reports.py               # PDF report generation
+│   │   ├── serializers.py           # DRF serializers
+│   │   ├── services.py              # Business logic
+│   │   ├── tests.py                 # Unit tests
+│   │   ├── urls.py                  # App URL configuration
+│   │   └── views.py                 # API views
+│   ├── manage.py                    # Django management script
+│   └── screenshots/                 # Application screenshots
+├── desktop/                         # PyQt5 application source
+│   ├── api_client.py                # API client for backend communication
+│   ├── linuxrun.sh                  # Linux desktop setup script
+│   ├── main.py                      # Desktop app entry point
+│   ├── requirements.txt             # Desktop-specific dependencies
+│   └── winrun.ps1                   # Windows desktop setup script
+├── web/                             # React application source
+│   ├── .gitignore
+│   ├── README.md
+│   ├── frontend.ps1                 # Windows frontend setup script
+│   ├── frontend.sh                  # Linux frontend setup script
+│   ├── package.json                 # Node.js dependencies
+│   ├── package-lock.json
+│   ├── public/                      # Static assets
+│   │   ├── favicon.ico
+│   │   ├── index.html
+│   │   ├── logo192.png
+│   │   ├── logo512.png
+│   │   ├── manifest.json
+│   │   └── robots.txt
+│   └── src/                         # React source code
+│       ├── App.css
+│       ├── App.js
+│       ├── App.test.js
+│       ├── api.js                   # API integration
+│       ├── components/              # React components
+│       │   ├── Dashboard.js
+│       │   └── Login.js
+│       ├── index.css
+│       ├── index.js
+│       ├── logo.svg
+│       ├── reportWebVitals.js
+│       └── setupTests.js
+├── sample_data_large.csv            # Large test dataset
+├── sample_data_varied.csv           # Varied test dataset
+├── sample_equipment_data.csv        # Test dataset
+├── requirements.txt                 # Backend dependencies
+├── LICENSE
+├── .gitignore
+└── README.md
 
 ```
 
