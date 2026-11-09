@@ -25,11 +25,7 @@ SECRET_KEY = 'django-insecure-6#om47nn1d%^enb9xihr_h^359+8v(uhsuql%70v^-p&8u7@9f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    "chem-flow-backend.onrender.com",
-    "localhost",
-    "127.0.0.1",
-]
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -45,12 +41,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'equipment',
-    'whitenoise',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -133,16 +127,13 @@ REST_FRAMEWORK = {
 }
 
 
-CORS_ALLOWED_ORIGINS = [
-    "https://chem-flow-frontend.onrender.com",
-]
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_URL = 'static/'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
