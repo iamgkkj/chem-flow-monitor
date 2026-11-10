@@ -8,7 +8,7 @@ const IS_LOCALHOST = window.location.hostname === "localhost" || window.location
 
 const API_URL = IS_LOCALHOST 
   ? "http://127.0.0.1:8000" 
-  : "https://chem-flow-backend.onrender.com"; 
+  : "https://chem-flow-monitor-backend.onrender.com"; 
 
 
 export function getToken() {
