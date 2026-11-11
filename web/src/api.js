@@ -2,13 +2,16 @@ import axios from 'axios';
 
 const TOKEN_KEY = 'auth_token';
 
-// 1. If running locally (localhost), point to Django on port 8000.
-// 2. If running on render (production), point to render.
+// 1. REACT_APP_API_URL wins (set on Render at build time).
+// 2. If running locally (localhost), point to Django on port 8000.
+// 3. Otherwise fall back to the deployed Render backend.
 const IS_LOCALHOST = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
 
-const API_URL = IS_LOCALHOST 
-  ? "http://127.0.0.1:8000" 
-  : "https://chem-flow-monitor-backend.onrender.com"; 
+const DEFAULT_API_URL = "https://chem-flow-backend.onrender.com";
+
+const API_URL = (
+  process.env.REACT_APP_API_URL || (IS_LOCALHOST ? "http://127.0.0.1:8000" : DEFAULT_API_URL)
+).replace(/\/+$/, "");
 
 
 export function getToken() {

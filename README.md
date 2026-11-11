@@ -290,6 +290,99 @@ If you're running the file as a program from GUI then make sure the backend serv
 
 ---
 
+## 🚀 Deploy to Render
+
+The repo ships with a `render.yaml` blueprint, so the whole stack (Django API + React static site + Postgres) can be deployed in one shot.
+
+### Option A — Blueprint (recommended)
+
+1. Push the changes to GitHub (`main` branch).
+2. In the Render Dashboard open **Blueprints → New Blueprint Instance**.
+3. Connect `https://github.com/iamgkkj/chem-flow-monitor` and click **Apply**.
+
+Render creates:
+
+| Resource | Type | URL |
+| :--- | :--- | :--- |
+| `chem-flow-backend` | Web Service (Python) | `https://chem-flow-backend.onrender.com` |
+| `chem-flow-monitor` | Static Site (React) | `https://chem-flow-monitor.onrender.com` |
+| `chem-flow-db` | Render Postgres | internal connection string |
+
+> [!IMPORTANT]
+> The **Free Postgres plan expires 30 days after it is created**. Upgrade it to a paid plan inside the Render dashboard before the grace period ends, or the API loses its database.
+
+### Option B — Manual setup
+
+#### B1. Backend — Web Service
+
+| Setting | Value |
+| :--- | :--- |
+| *Root Directory* | *(leave empty — repo root)* |
+| *Runtime* | Python |
+| *Build Command* | `./build.sh` |
+| *Start Command* | `gunicorn --chdir backend config.wsgi:application --bind 0.0.0.0:$PORT --workers ${WEB_CONCURRENCY:-2} --threads 4 --timeout 120 --access-logfile - --error-logfile -` |
+| *Health Check Path* | `/api/health/` |
+
+What `build.sh` does: installs `requirements.txt` → `collectstatic` → `migrate` → seeds the demo user.
+
+#### B2. Frontend — Static Site
+
+| Setting | Value |
+| :--- | :--- |
+| *Root Directory* | `web` |
+| *Build Command* | `npm ci && npm run build` |
+| *Publish Path* | `build` |
+
+#### B3. Database
+
+Create a **Render Postgres** instance and copy its **Internal Database URL** into the backend service as `DATABASE_URL`.
+If you skip the database, the backend falls back to SQLite, but on Render the file is wiped on every redeploy.
+
+### Environment variables
+
+**Backend (`chem-flow-backend`)**
+
+| Key | Value | Required |
+| :--- | :--- | :--- |
+| `SECRET_KEY` | Generate in the dashboard (`generateValue: true` in the blueprint) | ✅ |
+| `PYTHON_VERSION` | `3.12.13` — Django 4.2 / pandas 2.2 have no wheels for Render's default Python 3.14 | ✅ |
+| `DEBUG` | `False` | ✅ |
+| `DATABASE_URL` | Postgres internal URL (`postgresql://user:pass@host:5432/db`) | ✅ (prod) |
+| `ALLOWED_HOSTS` | `.onrender.com,chem-flow-backend.onrender.com` | ✅ |
+| `CORS_ALLOWED_ORIGINS` | `https://chem-flow-monitor.onrender.com,http://localhost:3000` | ✅ |
+| `DJANGO_SETTINGS_MODULE` | `config.settings` | optional |
+| `WEB_CONCURRENCY` | `1` on the free plan, `2`+ on a paid plan | optional |
+| `MEDIA_ROOT` | `/opt/data/media` (a persistent disk mount) | optional |
+| `DATABASE_CONN_MAX_AGE` | `60` seconds | optional |
+| `DEMO_USERNAME` / `DEMO_PASSWORD` / `DEMO_EMAIL` | demo account credentials | optional |
+| `CREATE_DEMO_USER` | `false` to skip seeding the demo user | optional |
+
+**Frontend (`chem-flow-monitor`)**
+
+| Key | Value | Required |
+| :--- | :--- | :--- |
+| `REACT_APP_API_URL` | `https://chem-flow-backend.onrender.com` | ✅ |
+| `NODE_VERSION` | `22.22.1` | optional |
+
+> [!NOTE]
+> `REACT_APP_*` variables are **baked into the bundle at build time**. After changing it, trigger a new build (clear the build cache) for the frontend.
+
+### Free tier limitations
+
+* The web service spins down after 15 min of inactivity → the first request takes ~1 min to wake up.
+* The filesystem is ephemeral: uploaded CSVs under `MEDIA_ROOT` disappear on redeploy (analytics rows stay in Postgres). Mount a persistent disk for the uploads.
+* Free Postgres expires after 30 days.
+* Free web services cannot use a persistent disk — upgrade the service plan if you need one.
+
+### Post-deploy checklist
+
+1. `curl https://chem-flow-backend.onrender.com/api/health/` → `{"status": "ok", ...}`
+2. Open the frontend URL, log in with `demo` / `demo12345`.
+3. Upload `sample_equipment_data.csv` and generate the PDF report.
+4. If the browser reports CORS errors, add the frontend origin to `CORS_ALLOWED_ORIGINS` and redeploy the backend.
+
+---
+
 ## ✔ Evaluation & Usage Guide
 
 To test the application features, use the provided sample data and credentials.

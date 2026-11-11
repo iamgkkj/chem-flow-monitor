@@ -17,11 +17,33 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.http import JsonResponse
 from django.urls import include, path
 
 from rest_framework.authtoken.views import obtain_auth_token
 
+
+def health_check(request):
+    """Unauthenticated liveness endpoint used by Render health checks."""
+    return JsonResponse({'status': 'ok', 'service': 'chem-flow-backend'})
+
+
+def api_index(request):
+    """Tiny landing page so hitting the API root returns something useful."""
+    return JsonResponse({
+        'service': 'Chem Flow Monitor API',
+        'endpoints': [
+            '/api/auth/token/',
+            '/api/datasets/upload/',
+            '/api/datasets/history/',
+            '/api/health/',
+        ],
+    })
+
+
 urlpatterns = [
+    path('', api_index, name='api-index'),
+    path('api/health/', health_check, name='health-check'),
     path('admin/', admin.site.urls),
     path('api/auth/token/', obtain_auth_token, name='api-token-auth'),
     path('api/', include('equipment.urls')),
