@@ -4,12 +4,13 @@ Django settings for config project.
 Environment driven so the same codebase runs locally and on Render.
 
 Key environment variables (see README "Deploy to Render"):
-    SECRET_KEY          - required in production, generate one on Render
-    DEBUG               - "true"/"false" (defaults to False)
-    DATABASE_URL       - Postgres connection string (falls back to local SQLite)
-    ALLOWED_HOSTS       - comma separated host list
+    SECRET_KEY           - required in production, generate one on Render
+    DEBUG                - "true"/"false" (False on Render, True locally)
+    DATABASE_URL         - Postgres connection string (falls back to local SQLite)
+    ALLOWED_HOSTS        - comma separated host list
     CORS_ALLOWED_ORIGINS - comma separated list of allowed browser origins
-    MEDIA_ROOT          - optional path for uploaded CSVs (persistent disk)
+    MEDIA_ROOT           - optional path for uploaded CSVs (persistent disk)
+    DEMO_USERNAME / DEMO_PASSWORD / DEMO_EMAIL - seeded demo account
 """
 
 import os
