@@ -320,10 +320,13 @@ Render creates:
 | *Root Directory* | *(leave empty — repo root)* |
 | *Runtime* | Python |
 | *Build Command* | `./build.sh` |
-| *Start Command* | `gunicorn --chdir backend config.wsgi:application --bind 0.0.0.0:$PORT --workers ${WEB_CONCURRENCY:-2} --threads 4 --timeout 120 --access-logfile - --error-logfile -` |
+| *Start Command* | `python backend/manage.py ensure_demo_user --noinput && gunicorn --chdir backend config.wsgi:application --bind 0.0.0.0:$PORT --workers ${WEB_CONCURRENCY:-2} --threads 4 --timeout 120 --access-logfile - --error-logfile -` |
 | *Health Check Path* | `/api/health/` |
 
 What `build.sh` does: installs `requirements.txt` → `collectstatic` → `migrate` → seeds the demo user.
+
+> [!IMPORTANT]
+> Keep `ensure_demo_user` in the **start command**. It creates the demo account if it is missing and re-syncs its password on every boot, so a login can never be blocked by a database that was swapped or reset after the build.
 
 #### B2. Frontend — Static Site
 
@@ -442,6 +445,8 @@ The backend exposes the following endpoints for the frontend clients:
 * **Invisible password during initial setup:** Keep in mind that the password is invisible during initial setup (Due to TUI limitations), but it is still being set. *Tip: hold backspace to clear the password and then type it again.*
 * **Testing Application in Windows:** You can use the automated `winrun.ps1` script in PowerShell for a quick setup. If it fails, follow the manual setup.
 * **Incorrect Python Environment:** If you get "ModuleNotFoundError", ensure you are using the virtual environment. It is safer to use the explicit path: `.venv/bin/python3` (Linux/Mac OS) or `.venv\Scripts\python` (Windows) instead of just `python`.
+* **Login returns 400 ("Unable to log in with provided credentials"):** The API is up but the `demo` account is missing or its password differs in the deployed database — usually because the build ran `migrate` but never seeded the user, or the database was swapped after the build. The start command now runs `python backend/manage.py ensure_demo_user --noinput` on every boot, which creates the account and re-syncs the password; trigger a redeploy after adding it. You can also run that command from the Render Shell (`python backend/manage.py ensure_demo_user`). Override the credentials with `DEMO_USERNAME` / `DEMO_PASSWORD`.
+* **Login returns 400 but the API works:** The frontend may still be pointing at an old backend. `REACT_APP_API_URL` is compiled into the bundle, so change it and **clear the build cache** on the static site.
 * **Bad Request (400) in Windows:** If you can't login with the demo credentials, it might be because the automation script created a new superuser with your system's specific environment. Try logging in with the username/password you manually set (if any) or check the script output for user creation status.
 
 #### ⚠️ Important: 
