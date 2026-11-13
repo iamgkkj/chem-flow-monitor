@@ -1,5 +1,5 @@
 # Chem Flow Monitor
-**[🔴 Live Demo](https://chem-flow-monitor.onrender.com/)** | **[📄 API Docs](https://chem-flow-backend.onrender.com/api/datasets/history/)** | **[📄 Project Documentation](https://docs.google.com/document/d/1sbKwdR0MgMHTLUGTTjjW1WPOu5JB55w-su5mencRrjU/edit?usp=sharing)**
+**[🔴 Live Demo](https://chem-flow-monitor-rues.onrender.com/)** | **[📄 API Docs](https://chem-flow-backend-lxih.onrender.com/api/datasets/history/)** | **[📄 Project Documentation](https://docs.google.com/document/d/1sbKwdR0MgMHTLUGTTjjW1WPOu5JB55w-su5mencRrjU/edit?usp=sharing)**
 
 **Username:** `demo`
 **Password:** `demo12345`
@@ -34,10 +34,11 @@ The application solves the problem of analyzing batch CSV exports from industria
 
 | Component | Technology | Description |
 | :--- | :--- | :--- |
-| **Backend** | Python, Django, DRF | REST API, Data Processing (Pandas), SQLite storage |
+| **Backend** | Python, Django, DRF | REST API, Data Processing (Pandas), PostgreSQL storage (SQLite locally) |
 | **Web Frontend** | React.js, Chart.js | Responsive web dashboard |
 | **Desktop Frontend** | Python, PyQt5, Matplotlib | Native desktop GUI |
 | **Data Processing** | Pandas | CSV parsing and statistical computation |
+| **Deployment** | Render.com | Blueprint (`render.yaml`): Django web service + React static site + Postgres |
 
 ##  Repository Structure
 
@@ -49,14 +50,19 @@ The application solves the problem of analyzing batch CSV exports from industria
 │   ├── config/                      # Django configuration
 │   │   ├── __init__.py
 │   │   ├── asgi.py                  # ASGI config
-│   │   ├── settings.py              # Django settings
+│   │   ├── settings.py              # Django settings (env driven)
 │   │   ├── urls.py                  # Root URL configuration
 │   │   └── wsgi.py                  # WSGI config
 │   ├── create_demo_user.py          # Script to create demo user
-│   ├── equipment/                  # Main Django app
+│   ├── equipment/                   # Main Django app
 │   │   ├── __init__.py
 │   │   ├── admin.py                 # Django admin configuration
 │   │   ├── apps.py                  # App configuration
+│   │   ├── management/              # Custom management commands
+│   │   │   ├── __init__.py
+│   │   │   └── commands/
+│   │   │       ├── __init__.py
+│   │   │       └── ensure_demo_user.py  # Create/repair the demo account
 │   │   ├── migrations/              # Database migrations
 │   │   │   ├── 0001_initial.py
 │   │   │   └── __init__.py
@@ -83,6 +89,7 @@ The application solves the problem of analyzing batch CSV exports from industria
 │   ├── package.json                 # Node.js dependencies
 │   ├── package-lock.json
 │   ├── public/                      # Static assets
+│   │   ├── _redirects               # SPA fallback rewrite
 │   │   ├── favicon.ico
 │   │   ├── index.html
 │   │   ├── logo192.png
@@ -96,7 +103,8 @@ The application solves the problem of analyzing batch CSV exports from industria
 │       ├── api.js                   # API integration
 │       ├── components/              # React components
 │       │   ├── Dashboard.js
-│       │   └── Login.js
+│       │   ├── Login.js
+│       │   └── Login.test.js
 │       ├── index.css
 │       ├── index.js
 │       ├── logo.svg
@@ -105,7 +113,11 @@ The application solves the problem of analyzing batch CSV exports from industria
 ├── sample_data_large.csv            # Large test dataset
 ├── sample_data_varied.csv           # Varied test dataset
 ├── sample_equipment_data.csv        # Test dataset
+├── build.sh                         # Render build script (install, migrate, seed)
+├── render.yaml                      # Render blueprint (API + static site + DB)
+├── Procfile                         # Process start command
 ├── requirements.txt                 # Backend dependencies
+├── .python-version                  # Pinned Python version for Render
 ├── LICENSE
 ├── .gitignore
 └── README.md
@@ -162,12 +174,13 @@ source .venv/bin/activate
 
 # Install dependencies
 python -m pip install --upgrade pip
-pip install Django==4.2.10 djangorestframework==3.14.0 pandas==2.2.0 reportlab==4.0.9 django-cors-headers==4.3.1 gunicorn --only-binary :all:
+pip install -r requirements.txt
 
 # Run migrations and setup database
 python3 backend/manage.py migrate
-python3 backend/manage.py createsuperuser --username demo --email demo@example.com
-# (Set password to 'demo12345' to match the guide below, or choose your own)
+python3 backend/manage.py ensure_demo_user
+# (Creates the 'demo' / 'demo12345' account used below; override with
+#  DEMO_USERNAME / DEMO_PASSWORD, or use createsuperuser for your own account)
 
 # Start the server
 python3 backend/manage.py runserver
@@ -191,8 +204,9 @@ pip install -r requirements.txt
 
 # Run migrations and setup database
 python backend/manage.py migrate
-python backend/manage.py createsuperuser --username demo --email demo@example.com
-# (Set password to 'demo12345' to match the guide below, or choose your own)
+python backend/manage.py ensure_demo_user
+# (Creates the 'demo' / 'demo12345' account used below; override with
+#  DEMO_USERNAME / DEMO_PASSWORD, or use createsuperuser for your own account)
 
 # Start the server
 python backend/manage.py runserver
@@ -304,9 +318,12 @@ Render creates:
 
 | Resource | Type | URL |
 | :--- | :--- | :--- |
-| `chem-flow-backend` | Web Service (Python) | `https://chem-flow-backend.onrender.com` |
-| `chem-flow-monitor` | Static Site (React) | `https://chem-flow-monitor.onrender.com` |
+| `chem-flow-backend` | Web Service (Python) | `https://chem-flow-backend-lxih.onrender.com` |
+| `chem-flow-monitor` | Static Site (React) | `https://chem-flow-monitor-rues.onrender.com` |
 | `chem-flow-db` | Render Postgres | internal connection string |
+
+> [!NOTE]
+> Render appends a random suffix (`-lxih`, `-rues`, …) when the requested name is already taken in your workspace — those are the suffixes of the live deployment. The `chem-flow-backend` / `chem-flow-monitor` names in `render.yaml` stay the same; the suffix only shows up in the public URL.
 
 > [!IMPORTANT]
 > The **Free Postgres plan expires 30 days after it is created**. Upgrade it to a paid plan inside the Render dashboard before the grace period ends, or the API loses its database.
@@ -339,6 +356,20 @@ What `build.sh` does: installs `requirements.txt` → `collectstatic` → `migra
 #### B3. Database
 
 Create a **Render Postgres** instance and copy its **Internal Database URL** into the backend service as `DATABASE_URL`.
+
+```
+postgresql://<user>:<password>@dpg-<instance-id>.<region>.aws.rendered.com:5432/<database>
+```
+
+For this deployment the instance is `chem-flow-db` with database `chem_flow` and user `chem_flow`, so the URL looks like:
+
+```
+postgresql://chem_flow:••••••••@dpg-xxxxxxxx.<region>.aws.rendered.com:5432/chem_flow
+```
+
+> [!WARNING]
+> The internal URL **contains the database password**. Copy it from the dashboard (*Databases → chem-flow-db → Connection → Internal Database URL*) and paste it into the service's environment variables — never commit it to this repository. The blueprint wires it up automatically (`fromDatabase`), so you only need it when you create the services by hand.
+
 If you skip the database, the backend falls back to SQLite, but on Render the file is wiped on every redeploy.
 
 ### Environment variables
@@ -350,9 +381,9 @@ If you skip the database, the backend falls back to SQLite, but on Render the fi
 | `SECRET_KEY` | Generate in the dashboard (`generateValue: true` in the blueprint) | ✅ |
 | `PYTHON_VERSION` | `3.12.13` — Django 4.2 / pandas 2.2 have no wheels for Render's default Python 3.14 | ✅ |
 | `DEBUG` | `False` | ✅ |
-| `DATABASE_URL` | Postgres internal URL (`postgresql://user:pass@host:5432/db`) | ✅ (prod) |
-| `ALLOWED_HOSTS` | `.onrender.com,chem-flow-backend.onrender.com` | ✅ |
-| `CORS_ALLOWED_ORIGINS` | `https://chem-flow-monitor.onrender.com,http://localhost:3000` | ✅ |
+| `DATABASE_URL` | Postgres **Internal Database URL** — `postgresql://chem_flow:<password>@dpg-<id>.<region>.aws.rendered.com:5432/chem_flow` | ✅ (prod) |
+| `ALLOWED_HOSTS` | `.onrender.com,chem-flow-backend-lxih.onrender.com` (hostnames only — no `https://`) | ✅ |
+| `CORS_ALLOWED_ORIGINS` | `https://chem-flow-monitor-rues.onrender.com,http://localhost:3000` | ✅ |
 | `DJANGO_SETTINGS_MODULE` | `config.settings` | optional |
 | `WEB_CONCURRENCY` | `1` on the free plan, `2`+ on a paid plan | optional |
 | `MEDIA_ROOT` | `/opt/data/media` (a persistent disk mount) | optional |
@@ -364,7 +395,7 @@ If you skip the database, the backend falls back to SQLite, but on Render the fi
 
 | Key | Value | Required |
 | :--- | :--- | :--- |
-| `REACT_APP_API_URL` | `https://chem-flow-backend.onrender.com` | ✅ |
+| `REACT_APP_API_URL` | `https://chem-flow-backend-lxih.onrender.com` | ✅ |
 | `NODE_VERSION` | `22.22.1` | optional |
 
 > [!NOTE]
@@ -379,7 +410,7 @@ If you skip the database, the backend falls back to SQLite, but on Render the fi
 
 ### Post-deploy checklist
 
-1. `curl https://chem-flow-backend.onrender.com/api/health/` → `{"status": "ok", ...}`
+1. `curl https://chem-flow-backend-lxih.onrender.com/api/health/` → `{"status": "ok", ...}`
 2. Open the frontend URL, log in with `demo` / `demo12345`.
 3. Upload `sample_equipment_data.csv` and generate the PDF report.
 4. If the browser reports CORS errors, add the frontend origin to `CORS_ALLOWED_ORIGINS` and redeploy the backend.
@@ -433,6 +464,8 @@ The backend exposes the following endpoints for the frontend clients:
 * `GET /api/datasets/<id>/` - Retrieve analytics for a specific dataset.
 * `GET /api/datasets/<id>/report/` - Download PDF report.
 * `GET /api/datasets/history/` - List last 5 uploads.
+* `GET /api/health/` - Liveness probe (used by the Render health check).
+* `GET /` - Service banner listing the available endpoints.
 
 ## ▲ Troubleshooting
 
@@ -445,7 +478,7 @@ The backend exposes the following endpoints for the frontend clients:
 * **Invisible password during initial setup:** Keep in mind that the password is invisible during initial setup (Due to TUI limitations), but it is still being set. *Tip: hold backspace to clear the password and then type it again.*
 * **Testing Application in Windows:** You can use the automated `winrun.ps1` script in PowerShell for a quick setup. If it fails, follow the manual setup.
 * **Incorrect Python Environment:** If you get "ModuleNotFoundError", ensure you are using the virtual environment. It is safer to use the explicit path: `.venv/bin/python3` (Linux/Mac OS) or `.venv\Scripts\python` (Windows) instead of just `python`.
-* **Login returns 400 ("Unable to log in with provided credentials"):** The API is up but the `demo` account is missing or its password differs in the deployed database — usually because the build ran `migrate` but never seeded the user, or the database was swapped after the build. The start command now runs `python backend/manage.py ensure_demo_user --noinput` on every boot, which creates the account and re-syncs the password; trigger a redeploy after adding it. You can also run that command from the Render Shell (`python backend/manage.py ensure_demo_user`). Override the credentials with `DEMO_USERNAME` / `DEMO_PASSWORD`.
+* **Login returns 400 ("Unable to log in with provided credentials"):** The API is up but the `demo` account is missing or its password differs in the deployed database — usually because the build ran `migrate` but never seeded the user, or the database was swapped after the build. The start command now runs `python backend/manage.py ensure_demo_user --noinput` on every boot, which creates the account and re-syncs the password; trigger a redeploy after adding it. On a paid plan you can also run it from the Render Shell (`python backend/manage.py ensure_demo_user`) — the free plan has no shell access, so use the start command there. Override the credentials with `DEMO_USERNAME` / `DEMO_PASSWORD`.
 * **Login returns 400 but the API works:** The frontend may still be pointing at an old backend. `REACT_APP_API_URL` is compiled into the bundle, so change it and **clear the build cache** on the static site.
 * **Bad Request (400) in Windows:** If you can't login with the demo credentials, it might be because the automation script created a new superuser with your system's specific environment. Try logging in with the username/password you manually set (if any) or check the script output for user creation status.
 
