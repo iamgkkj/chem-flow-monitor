@@ -5,7 +5,7 @@
 **Password:** `demo12345`
 
 <p align="center">
-  <img src="https://github.com/iamgkkj/chem-flow-monitor/blob/861705097e9b611e1081ff3dd95c07fd5691c1ef/web/src/QR%20Code.png" alt="Scan me" width="300"/>
+  <img src="https://github.com/iamgkkj/chem-flow-monitor/blob/0e33eb2e561e65b18b2aabede17866c32d235853/web/src/QR%20Code.png" alt="Scan me" width="300"/>
   <br>
   <em>Scan to test on mobile</em>
   <br>
